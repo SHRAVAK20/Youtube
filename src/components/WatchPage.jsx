@@ -1,15 +1,15 @@
-import { useEffect } from 'react'
-import { useDispatch } from 'react-redux'
-import { closeMenu } from '../utils/appSlice';
-import {useSearchParams} from 'react-router-dom'
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { closeMenu } from "../utils/appSlice";
+import { useSearchParams } from "react-router-dom";
 
 const WatchPage = () => {
   const [searchParams] = useSearchParams();
   console.log(searchParams.get("v"));
   const dispatch = useDispatch();
   useEffect(() => {
-    dispatch(closeMenu())
-  },[]);
+    dispatch(closeMenu());
+  }, []);
   return (
     <div className="px-5">
       <iframe
@@ -22,7 +22,7 @@ const WatchPage = () => {
         allowFullScreen
       ></iframe>
     </div>
-  )
-}
+  );
+};
 
-export default WatchPage
+export default WatchPage;
