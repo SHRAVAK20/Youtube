@@ -2,9 +2,10 @@ import { useEffect, useState } from "react";
 import user_logo from "../images/user.png";
 import youtube_logo from "../images/Youtube.jpg";
 import hemburger_logo from "../images/hamburger-menu.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toggleMenu } from "../utils/appSlice";
 import { YOUTUBE_SEARCH_API } from "../utils/constants";
+import { cacheSuggestions } from "../utils/searchSlice";
 
 const Head = () => {
   const [searchQuery, setSaerchQuery] = useState("");
@@ -12,12 +13,17 @@ const Head = () => {
   const [showSuggestion, setShowSuggestion] = useState(false);
   const dispatch = useDispatch();
 
+  const searchCache = useSelector((store) => store.search);
+
   useEffect(() => {
     //console.log(searchQuery);
 
     // getSaerchSuggestion();
 
-    const timer = setTimeout(() => getSaerchSuggestion(), 500);
+    const timer = setTimeout(() => {
+      if (searchCache[searchQuery]) setShowSuggestion(searchCache[searchQuery]);
+      else getSaerchSuggestion();
+    }, 500);
 
     return () => {
       clearTimeout(timer);
@@ -34,6 +40,7 @@ const Head = () => {
     // console.log(json[1]);
     setSuggestion(json[1]);
     // console.log(suggestion)
+    dispatch(cacheSuggestions({ [searchQuery]: json[1] }));
   };
 
   const toggleMenuHandler = () => {
